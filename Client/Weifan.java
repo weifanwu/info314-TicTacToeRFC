@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class Player {
+public class Weifan {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 3116);
         Scanner scanner = new Scanner(System.in);
