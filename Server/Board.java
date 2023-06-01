@@ -5,11 +5,42 @@ public class Board {
     int[][] board;
     String firstPlayer;
     String secondPlayer;
+    boolean start;
+    String name;
+    String turn;
 
-    public Board(String firstPlayer, String secondPlayer) {
+    public Board(String firstPlayer, String name) {
+        this.name = name;
         this.firstPlayer = firstPlayer;
+        this.secondPlayer = "";
+        this.start = false;
+        this.board = new int[3][3];
+        this.turn = firstPlayer;
+    }
+
+    public void join(String secondPlayer) {
+        this.start = true;
         this.secondPlayer = secondPlayer;
-        board = new int[3][3];
+    }
+
+    public boolean getStart() {
+        return this.start;
+    }
+
+    public String getTurn() {
+        return this.turn;
+    }
+
+    public void changeTurn() {
+        if (this.turn.equals(this.firstPlayer)) {
+            this.turn = secondPlayer;
+        } else {
+            this.turn = firstPlayer;
+        }
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public boolean move(int x, int y, String player) {
