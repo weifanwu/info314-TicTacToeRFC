@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class Player {
+public class Kevin {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 3116);
         Scanner scanner = new Scanner(System.in);
@@ -35,7 +35,7 @@ public class Player {
             String game = scanner.next();
             out.println("JOIN " + game.trim());
             String current = in.readLine();
-            System.out.println(current);
+            System.out.println("Status: " + current);
         }
         in.close();
         out.close();

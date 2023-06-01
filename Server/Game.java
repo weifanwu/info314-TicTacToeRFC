@@ -27,7 +27,6 @@ public class Game {
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Accepted connection from client: " + clientSocket.getInetAddress());
-
             Runnable serverRunnable = new Server(clientSocket);
             Thread serverThread = new Thread(serverRunnable);
             serverThread.start();
@@ -74,7 +73,7 @@ public class Game {
             // Read data from the client and send a response
             String inputLine = in.readLine();
             System.out.println("Received from client: " + inputLine);
-            this.player = "" + clientNumber;
+            this.player = "Client" + clientNumber;
             clientNumber++;
             out.println("SESS 1 " + player);
             System.out.println("The end of the session stage...");
@@ -137,9 +136,9 @@ public class Game {
 
         public void game() throws Exception {
             while (!ttt_game.getStart()) {
-                Thread.sleep(500);
+                Thread.sleep(100);
             }
-            String status = "It is " + ttt_game.getTurn() + " 's turn";
+            String status = "YRMV " + ttt_game.getName() + " " + ttt_game.getTurn();
             out.println(status);
         }
     }

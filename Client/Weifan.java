@@ -17,15 +17,25 @@ public class Weifan {
         String[] numbers = serverResponse.split(" ");
         String client_id = numbers[numbers.length - 1];
         System.out.println("This is your client ID: " + client_id);
-
         System.out.print("You want to join a game or create a new game: ");
         String action = scanner.next();
         if (action.equals("create")) {
-            System.out.print("Starting to create a new game: ");
+            System.out.println("Starting to create a new game: ");
             out.println("CREA " + client_id);
+            System.out.print("Wait the other user...");
+            String current = in.readLine();
+            System.out.println("Status: " + current);
         } else {
             System.out.print("This is all games that are available: ");
             out.println("LIST");
+            String games = in.readLine();
+            int length = games.length();
+            System.out.println(games.substring(5, length));
+            System.out.print("Select a game: ");
+            String game = scanner.next();
+            out.println("JOIN " + game.trim());
+            String current = in.readLine();
+            System.out.println("Status: " + current);
         }
         in.close();
         out.close();
