@@ -1,9 +1,11 @@
 import java.util.*;
 
 public class Board {
+
     int[][] board;
     String firstPlayer;
     String secondPlayer;
+
     public Board(String firstPlayer, String secondPlayer) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;

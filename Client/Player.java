@@ -17,7 +17,6 @@ public class Player {
         String[] numbers = serverResponse.split(" ");
         String client_id = numbers[numbers.length - 1];
         System.out.println("This is your client ID: " + client_id);
-
         System.out.print("You want to join a game or create a new game: ");
         String action = scanner.next();
         if (action.equals("create")) {
