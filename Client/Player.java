@@ -40,5 +40,6 @@ public class Player {
         in.close();
         out.close();
         socket.close();
+        scanner.close();
     }
 }
