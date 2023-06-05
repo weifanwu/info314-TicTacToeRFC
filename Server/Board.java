@@ -1,7 +1,3 @@
-import java.io.*;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Board {
 
@@ -12,8 +8,10 @@ public class Board {
     int gameID;
     int turn;
     int winnerID;
+    CombinedSocket playerOne;
+    CombinedSocket playerTwo;
 
-    public Board(int firstPlayer, int gameID) {
+    public Board(int firstPlayer, int gameID, CombinedSocket playerOne) {
         this.gameID = gameID;
         this.playerOneID = firstPlayer;
         this.playerTwoID = 0;
@@ -21,11 +19,13 @@ public class Board {
         this.board = new int[3][3];
         this.turn = playerOneID;
         this.winnerID = 0;
+        this.playerOne = playerOne;
     }
 
-    public void join(int secondPlayer) {
+    public void join(int secondPlayer, CombinedSocket playerTwo) {
         this.start = true;
         this.playerTwoID = secondPlayer;
+        this.playerTwo = playerTwo;
     }
 
     public boolean getStart() {
