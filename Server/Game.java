@@ -130,7 +130,7 @@ public class Game {
                     }
                 } else if (cmd.equals("CREA")) {
                     System.out.println("now creating a new game");
-                    create(info[1]);
+                    create(info[1].trim());
                 } else if (cmd.equals("JOIN")) {
                     join();
                 } else if (cmd.equals("GDBY")) {
