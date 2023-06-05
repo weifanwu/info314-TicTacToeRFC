@@ -142,7 +142,6 @@ public class Board {
         return false;
     }
 
-   
 
     public String toString() {
         String result = "BORD ";
