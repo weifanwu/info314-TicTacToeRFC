@@ -235,9 +235,11 @@ public class Game {
                         String location = actions[1];
                         System.out.println("player trying to move with data:" + location);
                         if (location.contains(",")) {
+                            // WHEN USER INPUT X, X server crash
+                            // ACEEPT INPUT IS X,X
                             System.out.println("player entered x,x");
                             String[] index = location.split(",");
-                            int x = Integer.parseInt(index[0]);
+                            int x = Integer.parseInt(index[0].trim());
                             int y = Integer.parseInt(index[1]);
                             System.out.println("player input:" + x + y);
                             // need guide user to re-enter a value
