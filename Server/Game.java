@@ -88,7 +88,7 @@ public class Game {
         public void session() throws Exception {
             System.out.println("Session stage...");
             // Read data from the client and a response
-            String[] cmd =  new String[] { "1", "2", "1" };
+            String[] cmd = new String[] { "1", "2", "1" };
             String action = "";
             while (!action.equals("HELO")) {
                 cmd = communicate.receive().split(" ");
@@ -108,12 +108,17 @@ public class Game {
                 // Read data from the client and send a response according to the request
 
                 String cmd = "";
-                while (!cmd.equals("HELO") && !cmd.equals("LIST") && !cmd.equals("JOIN") && !cmd.equals("STAT")
+                String[] info = {};
+                while (!cmd.equals("HELO") && !cmd.equals("CREA") && !cmd.equals("LIST") && !cmd.equals("JOIN")
+                        && !cmd.equals("STAT")
                         && !cmd.equals("GDBY")) {
-                    cmd = communicate.receive().split(" ")[0];
+                    info = communicate.receive().split(" ");
+                    cmd = info[0];
                 }
+                System.out.println("Valid input received: " + cmd);
 
-                String[] info = communicate.receive().split(" ");
+                System.out.println("info length " + info.length);
+
                 if (cmd.equals("LIST")) {
                     System.out.println("Listing all available games...");
                     if (info.length > 1) {
@@ -124,6 +129,7 @@ public class Game {
                         join();
                     }
                 } else if (cmd.equals("CREA")) {
+                    System.out.println("now creating a new game");
                     create(info[1]);
                 } else if (cmd.equals("JOIN")) {
                     join();
@@ -142,10 +148,13 @@ public class Game {
             System.out.println("Creating new game...");
             Board game = new Board(Integer.parseInt(clientID), gameNubmer, communicate);
             gameNubmer++;
-            ttt_game = game;
+            this.ttt_game = game;
             games.add(game);
             String result = "JOND " + clientID + " " + ttt_game.gameID + "\n";
+
             communicate.send(result);
+            System.out.println("Create msg sent: " + result);
+
         }
 
         public void list() throws Exception {
@@ -181,11 +190,13 @@ public class Game {
 
         public void join() throws Exception {
             // System.out.println("Waiting to make a selection...");
+            System.out.println("join started");
             String cmd = "";
+            String[] info = {};
             while (!cmd.equals("JOIN")) {
-                cmd = communicate.receive().split(" ")[0];
+                info = communicate.receive().split(" ");
+                cmd = info[0];
             }
-            String[] info = communicate.receive().split(" ");
             System.out.println("Name of the join_game: " + info[1]);
             String gameName = info[1];
             System.out.println("Name of the selected game: " + gameName);
@@ -199,9 +210,11 @@ public class Game {
             }
             String result = "JOND " + playerID + " " + ttt_game.gameID + "\n";
             communicate.send(result);
+            System.out.println("successfully joined");
         }
 
         public void game() throws Exception {
+            // need to handle wrong input
             while (!ttt_game.getStart()) {
                 Thread.sleep(100);
             }
@@ -212,6 +225,7 @@ public class Game {
             }
             VRMV();
             while (ttt_game.winnerID == 0) {
+                // handle repeated spot
                 if (ttt_game.getTurn() == playerID) {
                     communicate.send(ttt_game.toString());
                     String inputLine = communicate.receive();
@@ -219,23 +233,37 @@ public class Game {
                     String action = actions[0];
                     if (action.equals("MOVE")) {
                         String location = actions[1];
-                        System.out.println("player trying to move");
+                        System.out.println("player trying to move with data:" + location);
                         if (location.contains(",")) {
+                            System.out.println("player entered x,x");
                             String[] index = location.split(",");
                             int x = Integer.parseInt(index[0]);
                             int y = Integer.parseInt(index[1]);
-                            if (-1 < x && x < 3 && -1 < y && y < 3) {
+                            System.out.println("player input:" + x + y);
+                            // need guide user to re-enter a value
+                            if (0 < x && x < 4 && 0 < y && y < 4) {
                                 if (ttt_game.move(x, y, playerID)) {
                                     communicate.send(ttt_game.toString());
                                     VRMV();
+                                } else {
+                                    communicate.send(ttt_game.toString());
                                 }
-                            }
-                        } else if (0 < Integer.parseInt(location) && Integer.parseInt(location) < 10) {
-                            if (ttt_game.move(Integer.parseInt(location), playerID)) {
+                            } else {
                                 communicate.send(ttt_game.toString());
-                                VRMV();
                             }
-
+                        } else {
+                            if (0 < Integer.parseInt(location) && Integer.parseInt(location) < 10) {
+                                System.out.println("player entered a linear");
+                                System.out.println("player input:" + location);
+                                if (ttt_game.move(Integer.parseInt(location), playerID)) {
+                                    communicate.send(ttt_game.toString());
+                                    VRMV();
+                                } else {
+                                    communicate.send(ttt_game.toString());
+                                }
+                            } else {
+                                communicate.send(ttt_game.toString());
+                            }
                         }
                     } else if (action.equals("GDBY")) {
                         GDBY(playerID);
@@ -296,7 +324,8 @@ public class Game {
             if (ttt_game.playerTwoID != 0) {
                 result += ttt_game.winnerID + " ";
             }
-            communicate.send(result + "KTHXBYE" + "\n");
+            ttt_game.playerOne.send(result + "KTHXBYE" + "\n");
+            ttt_game.playerTwo.send(result + "KTHXBYE" + "\n");
         }
 
         public void VRMV() throws Exception {

@@ -51,7 +51,13 @@ public class Client {
     public static void create() throws Exception {
         System.out.println("Starting to create a new game: ");
         communicate.send("CREA " + client_id);
-        String current = communicate.receive();
+        String test = "";
+        while (!test.equals("JOND")) {
+            test = communicate.receive();
+
+        }
+        String current = test;
+        //String current = communicate.receive();
         System.out.println("This is the current " + current);
         String[] game = current.split(" ");
         game_id = game[2];
