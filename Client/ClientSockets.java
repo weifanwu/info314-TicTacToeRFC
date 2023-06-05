@@ -4,7 +4,7 @@ import java.util.*;
 
 
 
-public class CombinedSocket {
+public class ClientSockets {
      Socket TCPSocket;
      BufferedReader in;
      PrintWriter out;
@@ -15,14 +15,14 @@ public class CombinedSocket {
     
      int playerID;
      String protocol;
-    public CombinedSocket(Socket TCPSocket) throws IOException {
+    public ClientSockets(Socket TCPSocket) throws Exception {
         this.TCPSocket = TCPSocket;
         in = new BufferedReader(new InputStreamReader(this.TCPSocket.getInputStream()));
         out = new PrintWriter(TCPSocket.getOutputStream(), true);
         protocol = "TCP";
     }
 
-    public CombinedSocket(DatagramSocket UDPSocket, InetAddress IPAddress, int port) {
+    public ClientSockets(DatagramSocket UDPSocket, InetAddress IPAddress, int port) {
         this.UDPSocket = UDPSocket;
         this.IPAddress = IPAddress;
         this.port = port;
@@ -49,8 +49,6 @@ public class CombinedSocket {
 
             UDPSocket.receive(receivePacket);
             String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
-            this.IPAddress = receivePacket.getAddress();
-            this.port = receivePacket.getPort();
             return message;
         }
     }

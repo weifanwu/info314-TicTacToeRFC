@@ -60,29 +60,29 @@ public class TTTServer {
     }
   }
 
-  // private static void UDPService() {    
-  // while (true) {
-  // try {
-  // byte[] buffer = new byte[1024];
-  // DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-  // UDPSocket.receive(packet);
+  private static void UDPService() {    
+    while (true) {
+      try {
+        byte[] buffer = new byte[1024];
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        UDPSocket.receive(packet);
 
-  // System.out.println("client in");
+        System.out.println("client in");
 
-  // String request = new String(packet.getData(), 0, packet.getLength());
-  // InetAddress IPAddress = packet.getAddress();
-  // int port = packet.getPort();
-  // DatagramSocket UDPSocket;
+        String request = new String(packet.getData(), 0, packet.getLength());
+        InetAddress IPAddress = packet.getAddress();
+        int port = packet.getPort();
+        DatagramSocket UDPSocket;
 
-  // exec.execute(() -> handleClientRequest(new CombinedSocket(UDPSocket,
-  // IPAddress, port), request));
-  // } catch (IOException e) {
-  // e.printStackTrace();
-  // }
-  // }
-  // }
+        exec.execute(() -> handleClientRequest(
+          new CombinedSocket(UDPSocket, IPAddress, port), request));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+  }
+  }
 
-  private void handleRequest(CombinedSocket connection, String inputLine) {
+  private static void handleRequest(CombinedSocket connection, String inputLine) {
     String[] actions = inputLine.split(" ");
     String action = actions[0];
     
