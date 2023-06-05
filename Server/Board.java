@@ -56,7 +56,7 @@ public class Board {
             return true;
         }
         return false;
-        
+
     }
 
     public boolean move(int value, int playerID) {
@@ -68,9 +68,8 @@ public class Board {
             return true;
         }
         return false;
-        
-    }
 
+    }
 
     public boolean isFull() {
         boolean result = false;
@@ -142,7 +141,6 @@ public class Board {
         return false;
     }
 
-
     public String toString() {
         String result = "BORD ";
         if (start) {
@@ -170,7 +168,7 @@ public class Board {
         } else {
             result += gameID + " ";
             result += playerOneID + "\n";
-        
+
         }
         return result;
     }

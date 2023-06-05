@@ -1,8 +1,7 @@
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.Scanner;
 
 public class Weifan {
     static ClientSockets communicate;
@@ -20,7 +19,7 @@ public class Weifan {
             DatagramSocket socket = new DatagramSocket();
             communicate = new ClientSockets(socket, InetAddress.getByName("localhost"), 3116);
             communicate.send("Connection...");
-            //??? what is this
+            // ??? what is this
         } else if (parts[0].equals("t3tcp")) {
             Socket socket = new Socket("localhost", 3116);
             communicate = new ClientSockets(socket);
@@ -93,14 +92,14 @@ public class Weifan {
         System.out.print("I am so exited, let's start the game!");
         while (true) {
             String board = communicate.receive();
-            
-            if (board.split(" ")[0].equals("BORD")){
-                System.out.println("This is the board: \n" + board.split(" ")[5].substring(0, 6) + "|\n" + board.split(" ")[5].substring(6, 12) + "|\n" + board.split(" ")[5].substring(12, 19));
+
+            if (board.split(" ")[0].equals("BORD")) {
+                System.out.println("This is the board: \n" + board.split(" ")[5].substring(0, 6) + "|\n"
+                        + board.split(" ")[5].substring(6, 12) + "|\n" + board.split(" ")[5].substring(12, 19));
             } else if (board.split(" ")[0].equals("TERM")) {
                 System.out.println("Player " + board.split(" ")[2] + "won!!!");
             }
-            
-            
+
             String[] message = board.split(" ");
             if (message[0].equals("VRMV") || (message[0].equals("BORD") && message[4].equals(client_id))) {
                 if (message[2].equals(client_id)) {
@@ -111,12 +110,13 @@ public class Weifan {
 
                         cmd = info[0];
                     }
-                    System.out.println("This is the board: \n" + info[5].substring(0, 6) + "|\n" + info[5].substring(6, 12) + "|\n" + info[5].substring(12, 19));
+                    System.out.println("This is the board: \n" + info[5].substring(0, 6) + "|\n"
+                            + info[5].substring(6, 12) + "|\n" + info[5].substring(12, 19));
                     System.out.println("Please make you move: ");
                     String move = scanner.next();
                     communicate.send("MOVE " + move);
                 } else {
-                    
+
                     System.out.println("Please wait for the other play to make the move!");
                 }
             }
