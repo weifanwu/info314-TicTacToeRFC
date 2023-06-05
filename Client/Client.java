@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import javax.swing.text.StyledEditorKit;
 
 public class Client {
     static ClientSockets communicate;
@@ -34,7 +33,9 @@ public class Client {
         } else {
             list();
         }
+        move();
     }
+
     public static void session() throws Exception {
         System.out.print("Enter your User Name: ");
         String client = scanner.next();
@@ -50,11 +51,12 @@ public class Client {
     public static void create() throws Exception {
         System.out.println("Starting to create a new game: ");
         communicate.send("CREA " + client_id);
-        System.out.print("Wait the other user...");
         String current = communicate.receive();
+        System.out.println("This is the current " + current);
         String[] game = current.split(" ");
         game_id = game[2];
         System.out.println("Status: " + current);
+        System.out.print("Wait the other user...");
     }
 
     public static void list() throws Exception {
@@ -85,6 +87,9 @@ public class Client {
                 } else {
                     System.out.println("Please wait for the other play to make the move!");
                 }
+            } else if (message[0].equals("TERM")) {
+                System.out.println("This is the winnner: " + message[2]);
+                System.out.println("The end of the game...");
             }
         }
     }

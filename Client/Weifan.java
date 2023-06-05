@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 public class Weifan {
     static ClientSockets communicate;
     static String client_id;
@@ -32,6 +34,7 @@ public class Weifan {
         } else {
             list();
         }
+        move();
     }
     public static void session() throws Exception {
         System.out.print("Enter your User Name: ");
@@ -48,11 +51,12 @@ public class Weifan {
     public static void create() throws Exception {
         System.out.println("Starting to create a new game: ");
         communicate.send("CREA " + client_id);
-        System.out.print("Wait the other user...");
         String current = communicate.receive();
+        System.out.println("This is the current " + current);
         String[] game = current.split(" ");
         game_id = game[2];
         System.out.println("Status: " + current);
+        System.out.print("Wait the other user...");
     }
 
     public static void list() throws Exception {
