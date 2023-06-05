@@ -17,30 +17,6 @@ public class Game {
         games = new ArrayList<>();
         clientNumber = 1;
         gameNubmer = 1;
-
-        // ServerSocket serverSocket = new ServerSocket(3116);
-        // DatagramSocket udpSocket = new DatagramSocket(3116);
-        // System.out.println("Server started on port 3116...");
-
-        // Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        // try {
-        // serverSocket.close();
-        // udpSocket.close();
-        // System.out.println("");
-        // System.out.println("Server socket closed.");
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // }));
-
-        // while (true) {
-        // Socket clientSocket = serverSocket.accept();
-        // System.out.println("Accepted connection from client: " +
-        // clientSocket.getInetAddress());
-        // Runnable serverRunnable = new Server(clientSocket);
-        // Thread serverThread = new Thread(serverRunnable);
-        // serverThread.start();
-        // }
         tcpThread = new Thread(new TCPServerThread());
         udpThread = new Thread(new UDPServerThread());
 
@@ -112,15 +88,16 @@ public class Game {
         public void session() throws Exception {
             System.out.println("Session stage...");
             // Read data from the client and a response
-            String cmd = "";
-            while (!cmd.equals("HELO")) {
-                cmd = communicate.receive().split(" ")[0];
+            String[] cmd =  new String[] { "1", "2", "1" };
+            String action = "";
+            while (!action.equals("HELO")) {
+                cmd = communicate.receive().split(" ");
+                action = cmd[0];
             }
-            String[] info = communicate.receive().split(" ");
-            System.out.println("Received from client: " + info[2]);
+            System.out.println("Received from client: " + cmd[2]);
             this.playerID = clientNumber;
             clientNumber++;
-            communicate.send("SESS " + info[1] + " " + playerID + "\n");
+            communicate.send("SESS " + cmd[1] + " " + playerID + "\n");
             System.out.println("The end of the session stage...");
         }
 
@@ -229,13 +206,11 @@ public class Game {
                 Thread.sleep(100);
             }
 
-            if (ttt_game.getStart() == true && playerID == ttt_game.playerOneID) {
+            if (playerID == ttt_game.playerTwoID) {
                 String result = "JOND " + ttt_game.playerTwoID + " " + ttt_game.gameID + "\n";
                 communicate.send(result);
             }
-
             VRMV();
-
             while (ttt_game.winnerID == 0) {
                 if (ttt_game.getTurn() == playerID) {
                     communicate.send(ttt_game.toString());
@@ -268,6 +243,11 @@ public class Game {
                         communicate.send(STAT(actions[1]));
                     } else if (action.equals("QUIT")) {
                         QUIT(actions[1], playerID);
+                    }
+                } else {
+                    Thread.sleep(1000);
+                    if (ttt_game.getTurn() == playerID) {
+                        VRMV();
                     }
                 }
             }
@@ -322,8 +302,7 @@ public class Game {
         public void VRMV() throws Exception {
             String result = "VRMV ";
             result += ttt_game.gameID + " " + ttt_game.getTurn() + "\n";
-            ttt_game.playerOne.send(result);
-            ttt_game.playerTwo.send(result);
+            communicate.send(result);
         }
 
     }

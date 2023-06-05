@@ -2,7 +2,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class Weifan {
+import javax.swing.text.StyledEditorKit;
+
+public class Client {
     static ClientSockets communicate;
     static String client_id;
     static String game_id;
