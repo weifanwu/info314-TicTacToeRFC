@@ -226,7 +226,7 @@ public class Game {
                 String result = "JOND " + ttt_game.playerTwoID + " " + ttt_game.gameID + "\n";
                 communicate.send(result);
             }
-            VRMV();
+            YRMV();
             while (ttt_game.winnerID == 0) {
                 // handle repeated spot
                 if (ttt_game.getTurn() == playerID) {
@@ -249,7 +249,7 @@ public class Game {
                             if (0 < x && x < 4 && 0 < y && y < 4) {
                                 if (ttt_game.move(x, y, playerID)) {
                                     communicate.send(ttt_game.toString());
-                                    VRMV();
+                                    YRMV();
                                 } else {
                                     communicate.send(ttt_game.toString());
                                 }
@@ -262,7 +262,7 @@ public class Game {
                                 System.out.println("player input:" + location);
                                 if (ttt_game.move(Integer.parseInt(location), playerID)) {
                                     communicate.send(ttt_game.toString());
-                                    VRMV();
+                                    YRMV();
                                 } else {
                                     communicate.send(ttt_game.toString());
                                 }
@@ -280,7 +280,7 @@ public class Game {
                 } else {
                     Thread.sleep(1000);
                     if (ttt_game.getTurn() == playerID) {
-                        VRMV();
+                        YRMV();
                     }
                 }
             }
@@ -333,8 +333,8 @@ public class Game {
             ttt_game.playerTwo.send(result + "KTHXBYE" + "\n");
         }
 
-        public void VRMV() throws Exception {
-            String result = "VRMV ";
+        public void YRMV() throws Exception {
+            String result = "YRMV ";
             result += ttt_game.gameID + " " + ttt_game.getTurn() + "\n";
             communicate.send(result);
         }
