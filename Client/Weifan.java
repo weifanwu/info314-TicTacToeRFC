@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Weifan {
     static ClientSockets communicate;
     static String client_id;
+    static String session_id;
     static String game_id;
     static Scanner scanner;
 
@@ -50,7 +51,8 @@ public class Weifan {
         String serverResponse = communicate.receive();
         String[] numbers = serverResponse.split(" ");
         client_id = numbers[numbers.length - 1];
-        System.out.println("This is your client ID: " + client_id);
+        session_id = numbers[numbers.length - 1];
+        System.out.println("This is your session ID: " + client_id);
     }
 
     public static void create() throws Exception {
