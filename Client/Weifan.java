@@ -103,7 +103,7 @@ public class Weifan {
             }
 
             String[] message = board.split(" ");
-            if (message[0].equals("VRMV") || (message[0].equals("BORD") && message[4].equals(client_id))) {
+            if (message[0].equals("'YRMV") || (message[0].equals("BORD") && message[4].equals(client_id))) {
                 if (message[2].equals(client_id)) {
                     String cmd = "";
                     String[] info = {};
